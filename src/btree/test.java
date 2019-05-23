@@ -39,15 +39,16 @@ public class test {
 		
 		
 		// 中序遍历非递归(借助栈实现)
-		
+		bTree.inOrderByStatck();
 		
 		
 		// 按照层次遍历(借助队列实现)
-		
-		
+		bTree.levelOrderByStack();
+		System.out.println();
 		
 		// 在二叉树中查找某个值
-		System.out.println(bTree.findKey(7));
+		System.out.println("二叉树中查找某个值："+bTree.findKey(7));
+		
 		
 		
 		// 二叉树的高度

@@ -1,5 +1,9 @@
 package btree;
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import javax.print.attribute.Size2DSyntax;
 
 /**
@@ -65,6 +69,7 @@ public class LinkedBinaryTree implements BinaryTree{
 	}
 	
 	public Node findKey(Object value,Node root){
+		
 		if(root == null){ // 递归结束条件1：节点为空，可能是整个树的根节点，也可能是递归调用中叶子节点中左孩子和右孩子
 			return null;
 		}else if(root != null && root.value == value){ // 递归的结束条件2：找到了
@@ -137,8 +142,32 @@ public class LinkedBinaryTree implements BinaryTree{
 	}
 
 	@Override
-	public void inOrderByStatck() {
-		
+	public void inOrderByStatck() {  // 中序遍历 - 通过栈来实现
+		System.out.println("中序非递归遍历：");
+		// 创建栈
+		Deque<Node> stack = new LinkedList<Node>();
+		Node current = root;
+		// while循环 栈 和 当前节点不为空
+		while(current != null || !stack.isEmpty()){
+			// while循环节点不为空
+			while(current != null){    //  ---------> question：为啥是对节点进行不为空的循环？ - 空节点是退出的条件，否则就代表该节点下面还会有子节点
+				// 添加当前节点(根节点)
+				stack.push(current);
+				// 将节点指针指向左节点 - 这样才能符合中序遍历的特征
+				current = current.leftChild;
+			}
+			
+			// 判断栈不为空
+			if(!stack.isEmpty()){  // 如果栈为空的话，则代表第一期的数据已经走到根结点了，需要将指针指向右节点
+				// 出栈 - 形成中序遍历的结果
+
+				current = stack.pop();
+				System.out.print(current.value + " ");
+				current = current.rightChild;
+			}
+			
+		}
+		System.out.println();
 	}
 
 	@Override
@@ -147,8 +176,21 @@ public class LinkedBinaryTree implements BinaryTree{
 	}
 
 	@Override
-	public void levelOrderByStack() {
-		
+	public void levelOrderByStack() {  // 按照层次遍历
+		if(root == null) return;
+		Queue<Node> queue = new LinkedList<Node>();
+		queue.add(root);
+		System.out.println("按层次遍历");
+		while(!queue.isEmpty()){
+			for(int i=0;i<queue.size();i++){ // 对当前队列进行循环，方便下面步骤的取值
+				Node temp = queue.poll();
+				
+				System.out.print(temp.value+" "); // 输出当前队列存在节点的值
+				// 判断是否存在左右子节点
+				if(temp.leftChild != null)queue.add(temp.leftChild);
+				if(temp.rightChild != null)queue.add(temp.rightChild);
+			}
+		}
 	}
 
 }
