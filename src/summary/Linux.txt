@@ -59,6 +59,107 @@ Linux的启动过程：
 		关于组的命令：
 			useradd -g指定该用户所在的主组 ,-G指定其他组
 			useradd -g 组名 用户名
+			
+==========================================================
+2019-06-05：
+	在Linux上面部署的相关命令的练习：
+ 
+	 列出根目录：  ls用来遍历当前目录下所有的文件和目录
+	  ls /  
+	
+	 遍历详细信息： 遍历详细信息，如权限，所属用户，创建日期，大小等信息
+	  ls -lh
+	
+	 查看当前所处目录：
+	  pwd
+	
+	 创建目录： -p是指如果abc的父目录不存在，那么会帮助创建其父目录
+	  mkdir -p /test/abc
+	
+	 创建文件：
+	  touch test.java
+	
+	 删除文件： -f是强制删除的意思
+	  rm -f test.java
+	
+	 删除目录： rm命令也可以用来删除目录，-r表示删除目录 f表示强制
+	  rm -rf /test/abc
+	
+	 查看文件的命令：查看/etc/passwd文件的内容，-50表示查看最后50行 f表示滚动查看，当这个文件发生变化的时候，会自动展示最新的内容。 - 适用于查看日志文件
+	  tail -50f /etc/passwd
+	
+	 使用格式化列出隐藏文件：ls -al
+	
+	 删除目录：rm -r dir
+	
+	 强制删除目录：rm -rf dir
+	
+	 将file1复制到file2：cp file1 file2
+	
+	 创建file的符号连接link：ln -s file link
+	
+	 查看更过的内容： more file
+	
+	 查看当前进程：ps
+	
+	 杀掉进程id pid：kill pid
+	
+	 搜索files中匹配pattern的内容：grep pattern files
+	
+	 两种文件夹解压的方式：
+	  tar xzf file.tar.gz  使用Gzip解压tar文件
+	  tar xjf.file.tar.bz2 使用Bzip2解压tar文件
+	
+	
+	
+	Linux命令简称和全称 - 
+	
+	 su：Swith user 切换用户，切换到root用户
+	 cat：Concatenate 串联 - 查询用户的指令
+	 uname：Unix name 系统名称
+	 df：Disk free 空余硬盘
+	 du：Disk usage 硬盘使用率
+	 chown：Change owner 改变所有者
+	 chgrp：Change group 改变用户组
+	 bash：GNU Bourne-Again Shell linux内核
+	 httpd：Start Apache 开启Apache
+	 sudo：Superuser do
+	
+	
+	部署步骤：
+	
+	 FTP章节：
+	  (一)、ftp服务器
+	   1.安装ftp服务器：
+	    yum install vsftpd -y
+	   2.开启ftp的服务
+	    systemctl start vsftpd.service
+	     检查一下开启的状态
+	      systemctl status vsftpd.service
+	   3.也可以通过检测端口来确认是否开启
+	    netstat -anp|grep 21
+	
+	  权限相关：
+	   读取权限 r=4
+	   写入权限 w=2
+	   执行权限 x=1
+	
+	  权限代表：当前用户、当前组、其他组
+	
+	  (二)、创建用户及用户
+	   1.创建ftp专用的用户目录
+	    mkdir -p /home/wwwroot/ftptest
+	   2.创建用户ftptest，指定其目录为用户目录中创建的/home/wwwroot/ftptest
+	    useradd -d /home/wwwroot/ftptest -g ftp -s /sbin/nologin ftptest
+	    参数说明： -g ftp 表示该用户属于ftp分组(ftp分组是内置的，不需要自己创建)
+	         -s /sbin/nologin表示这个用户不能用来登录secureCRT这样的客户端，这种不能登录的又叫做虚拟用户
+	   3.设置目录以及用户的权限(-R代表递归操作)
+	    chown -R ftptest /home/wwwroot/ftptest
+	    chmod -R 775 /home/wwwroot/ftptest
+	   4.为ftptest用户设置密码：
+	    passwd ftptest
+	
+	  (三)、配置用户
 
 
 
