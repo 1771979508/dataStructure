@@ -1,5 +1,6 @@
 package linkedList;
 
+import java.lang.reflect.Array;
 
 /**
 *	@author 作者 Joker青
