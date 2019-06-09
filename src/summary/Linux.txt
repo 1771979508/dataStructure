@@ -129,43 +129,78 @@ Linux的启动过程：
 	部署步骤：
 	
 	 FTP章节：
-	  (一)、ftp服务器
-	   1.安装ftp服务器：
-	    yum install vsftpd -y
-	   2.开启ftp的服务
-	    systemctl start vsftpd.service
-	     检查一下开启的状态
-	      systemctl status vsftpd.service
-	   3.也可以通过检测端口来确认是否开启
-	    netstat -anp|grep 21
+		  (一)、ftp服务器
+		   1.安装ftp服务器：
+		    yum install vsftpd -y
+		   2.开启ftp的服务
+		    systemctl start vsftpd.service
+		     检查一下开启的状态
+		      systemctl status vsftpd.service
+		   3.也可以通过检测端口来确认是否开启
+		    netstat -anp|grep 21
+		
+		  权限相关：
+		   读取权限 r=4
+		   写入权限 w=2
+		   执行权限 x=1
+		
+		  权限代表：当前用户、当前组、其他组
+		
+		  (二)、创建用户及用户
+		   1.创建ftp专用的用户目录
+		    mkdir -p /home/wwwroot/ftptest
+		   2.创建用户ftptest，指定其目录为用户目录中创建的/home/wwwroot/ftptest
+		    useradd -d /home/wwwroot/ftptest -g ftp -s /sbin/nologin ftptest
+		    参数说明： -g ftp 表示该用户属于ftp分组(ftp分组是内置的，不需要自己创建)
+		         -s /sbin/nologin表示这个用户不能用来登录secureCRT这样的客户端，这种不能登录的又叫做虚拟用户
+		   3.设置目录以及用户的权限(-R代表递归操作)
+		    chown -R ftptest /home/wwwroot/ftptest
+		    chmod -R 775 /home/wwwroot/ftptest
+		   4.为ftptest用户设置密码：
+		    passwd ftptest
+		
+		  (三)、配置用户
+	  
+	  
+	  
+	  
+	  
+	  
+	 
+
+	MySQL：
 	
-	  权限相关：
-	   读取权限 r=4
-	   写入权限 w=2
-	   执行权限 x=1
-	
-	  权限代表：当前用户、当前组、其他组
-	
-	  (二)、创建用户及用户
-	   1.创建ftp专用的用户目录
-	    mkdir -p /home/wwwroot/ftptest
-	   2.创建用户ftptest，指定其目录为用户目录中创建的/home/wwwroot/ftptest
-	    useradd -d /home/wwwroot/ftptest -g ftp -s /sbin/nologin ftptest
-	    参数说明： -g ftp 表示该用户属于ftp分组(ftp分组是内置的，不需要自己创建)
-	         -s /sbin/nologin表示这个用户不能用来登录secureCRT这样的客户端，这种不能登录的又叫做虚拟用户
-	   3.设置目录以及用户的权限(-R代表递归操作)
-	    chown -R ftptest /home/wwwroot/ftptest
-	    chmod -R 775 /home/wwwroot/ftptest
-	   4.为ftptest用户设置密码：
-	    passwd ftptest
-	
-	  (三)、配置用户
+		获取MySQL资源：
+			yum上mysql的资源有问题，所以不能只用yum，使用前需要其它命令获取mysql社区版
+				cd /tmp
+				wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+				rpm -ivh mysql-community-release-el7-5.noarch.rpm
+			
+		安装MySQL：
+			yum install mysql mysql-server mysql-devel -y
+		
+		启动服务：
+			systemctl start mysql.service
+		
+		查看端口
+			netstat -anp|grep 3306
 
 
 
-
-
-
-
+	Tomcat：
+		
+		获取资源：
+			wget https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-7/v7.0.94/bin/apache-tomcat-7.0.94.tar.gz
+			解压： tar xzf apache-tomcat-7.0.94.tar.gz
+			移动到相应的目录下面
+				mv apache-tomcat-7.0.94 /usr/local/tomcat7
+		运行：
+			/usr/local/tomcat7/bin/startup.sh
+			
+		查看状态：
+			netstat -anp|grep 8080
+		
+		查看启动日志：
+			tail -300f /usr/local/tomcat7/logs/catalina.out
 
 
