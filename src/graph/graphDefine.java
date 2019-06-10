@@ -1,6 +1,7 @@
 package graph;
 
 import java.awt.print.Printable;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -14,6 +15,7 @@ import java.util.Queue;
  * 				prev[w]存储的是，顶点w是从哪个前驱顶点遍历过来的。比如，我们通过顶点2的邻接表访问到顶点3，【那prev[s]等于2】。为了正向打印出路径，我们需要递归地来打印即print()函数
  * 
  * */
+
 public class graphDefine { // 定义无向图
 	
 	private int v; // 顶点的个数
@@ -81,9 +83,60 @@ public class graphDefine { // 定义无向图
 	
 	
 	// 图的深度优先搜索(Depth-First-Search) DFS   - 回溯思想 - 走迷宫
+		// 先定义未查询得到
+	boolean found = false;
 	
+	public void dfs(int s,int t){
+		found = false;
+		boolean[] visited = new boolean[v];
+		int[] prev = new int[v];  // 用来记录搜索的路径
+		for(int i=0;i<v;i++){
+			prev[i] = -1;
+		}
+		// 进行深度优先搜索的递归 - 即如果顶点(节点)存在下一个节点(顶点)的话，进行递归
+		recurDfs(s,t,visited,prev);
+		// 递归打印开始节点到结束节点的路径
+		print(prev, s, t);
+	}
 	
+	// 节点递归的函数
+	public void recurDfs(int w,int t,boolean[] visited,int[] prev){
+		if(found == true){
+			return;
+		}
+		visited[w] = true;
+		// 如果w节点等于最后一个节点则返回true
+		if(w==t){
+			found = true;
+			return;
+		}
+		for(int i=0;i<adj[w].size();i++){
+			int q = adj[w].get(i);
+			// 如果该节点为被记录走过则一直往下进行递归
+			if(!visited[q]){
+				//将走过的节点存入prev数组中
+				prev[q] = w;
+				// 继续递归直到访问过该节点
+				recurDfs(q, t, visited, prev);
+			}
+		}
+	}
 	
+	 
+	@Override
+	public String toString() {
+		return "graphDefine [v=" + v + ", adj=" + Arrays.toString(adj) + ", found=" + found + "]";
+	}
+
+	public static void main(String[] args) {
+		
+//		String string = "abcdefg";
+//		string.indexOf("a");
+		
+		graphDefine graphDefine = new graphDefine(10);
+		System.out.println(graphDefine);
+		
+	}
 	
 	
 	
