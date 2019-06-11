@@ -207,8 +207,17 @@ Linux的启动过程：
 			
 ========================================================================================
 
-Linux系统存在中文乱码：
+Linux系统安装tree命令：
 
+	 1.下载tree安装包
+	  wget http://mama.indstate.edu/users/ice/tree/src/tree-1.7.0.tgz
+	 2.解压下载后的文件
+	  tar -zxvf tree-1.7.0.tgz
+	 3.安装tree
+	  cd tree-1.7.0/
+	  make install
+
+Linux系统存在中文乱码：
 	 1.首先验证自己系统使用的什么语言
 	  echo $LANG
 	 2.locale来设置中文，支持中文库
