@@ -202,5 +202,25 @@ Linux的启动过程：
 		
 		查看启动日志：
 			tail -300f /usr/local/tomcat7/logs/catalina.out
+			
+			
+			
+========================================================================================
+
+Linux系统存在中文乱码：
+
+	 1.首先验证自己系统使用的什么语言
+	  echo $LANG
+	 2.locale来设置中文，支持中文库
+	  locale
+	 3.安装中文支持
+	  yum groupinstall chinese-support -y
+	 4.配置文件设置中文
+	  vi /etc/sysconfig/il8n
+	  LANG="zh_CN.UTF-8"
+	 5.centos7没有上面第4步的il8n配置文件,则修改下面的配置文件即可
+	  vi /etc/locale.conf
+	  LANG="zh_CN.UTF-8"
+	 6.之后重启系统，然后在终端也需要更改一下编码格式
 
 
